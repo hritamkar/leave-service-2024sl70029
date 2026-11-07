@@ -1,6 +1,7 @@
 
 package com.bits.leave;
 
+// Updated to verify Jenkins automatic CI triggering through Poll SCM.
 public class LeaveCalculator {
 
     // Calculate remaining leave balance
