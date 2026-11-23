@@ -61,5 +61,30 @@ pipeline {
                 '''
             }
         }
+	stage('Approval for Production') {
+    	    steps {
+		timeout(time: 10, unit: 'MINUTES') {
+                    input message: 'Approve deployment to Production?',
+                        ok: 'Approve'
+		}
+    	    }
+	}
+
+	stage('Deploy to Production') {
+    	    steps {
+                sh '''
+            	    docker rm -f leave-service-production || true
+
+            	    docker run -d \
+              	      --name leave-service-production \
+              	      -p 8086:8080 \
+              	      -e APP_ENV=production \
+              	      leave-service:1.0
+
+            	      sleep 5
+            	      curl -f http://localhost:8086
+        	'''
+    	    }
+	}
     }
 }
